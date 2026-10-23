@@ -58,8 +58,8 @@ def update_tasks(updates: list[TaskUpdate]):
             for k in ("target","title","rule","status"):
                 v=getattr(u,k)
                 if v is not None:
-                    if k=="target" and v and len(v)!=10:
-                        raise HTTPException(400,"target must be YYYY-MM-DD")
+                    # Targets may be ISO dates, blank, or event-based text such as "Upon AA Approval".
+                    # Keep the API permissive; date calculations are handled by the dashboard.
                     fields.append(f"{k}=?"); values.append(v)
             if fields:
                 values.append(u.id)
