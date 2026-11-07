@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<meta name="robots" content="noindex,nofollow">
+<title>CIRP Compliance Command Centre</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2359e1d2'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%230b1020'%3E%E2%97%88%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="mascot3D-dock" aria-label="3D CIRP companion" role="img">
+  <div id="mascot3D-bubble" class="show">Namaste! I’ll point out the next step that needs attention.</div>
+  <canvas id="mascot3D-canvas"></canvas>
+  <div id="mascot3D-label">CIRP Hero · Ready</div>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">◈</div>
+    <div>
+      <h1>CIRP Compliance Command Centre</h1>
+      <div class="sub" id="caseLine">Model timeline · target dates · reminder control</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="btnHero" type="button" aria-pressed="true" title="Show or hide the 3D companion">🦸 Hero: on</button>
+    <button id="btnAlerts" type="button">🔔 Enable alerts</button>
+    <button id="btnICS" type="button">↗ Export calendar</button>
+    <button id="btnAdd" type="button" class="primary">＋ Add milestone</button>
+  </div>
+</header>
+
+<main>
+  <section class="legal">
+    <strong>Legal register reviewed to the IBBI CIRP Regulations as amended up to the Fourth Amendment Regulations, 2026 (8/9 June 2026).</strong>
+    <p class="sub">Includes conditional checkpoints for Regulations 13(1A), 16E, 28A–28B, 30A, 31B and amended 39(3), plus Form GA (Reg. 39(3C)) and Form H (Reg. 39(4)). This is an operational tracker, not legal advice. Confirm the consolidated regulations, transition provisions, current circulars and NCLT orders for each case.</p>
+    <p class="sub">Official source: <a href="https://ibbi.gov.in" target="_blank" rel="noopener">ibbi.gov.in</a> (Legal Framework section)</p>
+  </section>
+
+  <section class="hero">
+    <div class="heroCard">
+      <div class="eyebrow">Live compliance overview</div>
+      <h2>Stay ahead of every<br>statutory deadline.</h2>
+      <p>Enter the commencement date and the tracker calculates the model timeline. Where a step depends on an earlier event, record the actual date performed and the dependent dates follow from it. Statutory outer limits never move.</p>
+      <div class="dates">
+        <label class="field">Case / corporate debtor<input id="caseName" maxlength="120" placeholder="e.g. ABC Private Limited"></label>
+        <label class="field">CIRP commencement date (T)<input id="baseDate" type="date"></label>
+        <label class="field">Reminder lead time
+          <select id="leadDays"><option value="1">1 day before</option><option value="3">3 days before</option><option value="7">7 days before</option></select>
+        </label>
+        <label class="field">Check date<input id="checkDate" type="date"></label>
+      </div>
+    </div>
+    <div class="heroCard">
+      <div class="progressTop"><div><div class="eyebrow">Completion pulse</div><div class="bigNum" id="percent">0%</div></div></div>
+      <div class="bar"><span id="progress"></span></div>
+      <div class="progressTop"><span class="muted" id="doneCount">0 of 0 tasks complete</span><span class="pill p-blue" id="health">Tracking active</span></div>
+      <p style="margin:16px 0 0;font-size:13px">Urgency badges respond to each due date and the selected check date.</p>
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="Summary">
+    <div class="metric"><small><span class="dot" style="background:var(--red)"></span>Overdue / due today</small><strong id="mOver">0</strong></div>
+    <div class="metric"><small><span class="dot" style="background:var(--amber)"></span><span id="mSoonLabel">Due soon</span></small><strong id="mSoon">0</strong></div>
+    <div class="metric"><small><span class="dot" style="background:var(--blue)"></span>Rest of next 7 days</small><strong id="mWeek">0</strong></div>
+    <div class="metric"><small><span class="dot" style="background:var(--green)"></span>Completed</small><strong id="mDone">0</strong></div>
+  </section>
+
+  <div class="toolbar">
+    <h2>Milestone register</h2>
+    <div class="filters">
+      <input class="search" id="search" type="search" placeholder="Search milestone, section, regulation…" aria-label="Search milestones">
+      <div class="tabs" role="group" aria-label="Filter">
+        <button class="tab active" data-filter="all" type="button">All</button>
+        <button class="tab" data-filter="urgent" type="button">Needs attention</button>
+        <button class="tab" data-filter="open" type="button">Open</button>
+        <button class="tab" data-filter="done" type="button">Completed</button>
+      </div>
+    </div>
+  </div>
+  <div class="tableWrap">
+    <table class="table">
+      <thead><tr><th>Milestone / statutory reference</th><th>Due date / trigger</th><th>Days left</th><th>Performed on</th><th>Urgency</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="tbody"><tr><td colspan="7" class="muted" style="padding:28px;text-align:center">Loading milestone register…</td></tr></tbody>
+    </table>
+  </div>
+
+  <section class="bottomGrid">
+    <div class="panel">
+      <h3>⚡ Priority queue</h3>
+      <div class="timeline" id="priority"></div>
+      <div class="notice">Dates are calculated from the commencement date and the linked tasks. Rows marked <em>projected</em> depend on an earlier step that has no performed date yet. Event-dependent steps need the actual trigger date. Verify the applicable Code, regulations, amendments, exclusions and NCLT orders before acting.</div>
+    </div>
+    <div class="panel">
+      <h3>🌐 Backup, sync &amp; reminders</h3>
+      <div class="timeline">
+        <div class="timelineItem"><div class="timelineIcon">💾</div><div><strong>Saved in this browser</strong><p>Everything is stored locally on this device. Use <em>Backup data</em> regularly.</p></div></div>
+        <div class="timelineItem"><div class="timelineIcon">🔔</div><div><strong>Browser alerts</strong><p>Work only while this page is open.</p></div></div>
+        <div class="timelineItem"><div class="timelineIcon">📆</div><div><strong>Calendar export</strong><p>Import the .ics file into Google, Outlook or Apple Calendar for reminders on your phone.</p></div></div>
+        <div class="timelineItem"><div class="timelineIcon">✉️</div><div><strong>Email reminders &amp; multi-device sync</strong><p>Optional: connect your Render service below. The server keeps a copy and sends a daily email digest of overdue and upcoming steps.</p></div></div>
+      </div>
+      <div class="syncGrid">
+        <label class="field">Server URL (leave blank if not using a server)<input id="apiUrl" type="url" inputmode="url" placeholder="https://your-service.onrender.com" autocomplete="off"></label>
+        <label class="field">Access key (if you set API_KEY on the server)<input id="apiKey" type="password" autocomplete="off" placeholder="optional"></label>
+        <label class="field">Auto-sync<select id="autoSync"><option value="1">On: sync after changes</option><option value="0">Off: manual only</option></select></label>
+      </div>
+      <p class="syncStatus" id="syncStatus">Not connected.</p>
+      <div class="actions" style="margin-top:10px">
+        <button id="btnSync" type="button">↻ Sync now</button>
+        <button id="btnBackup" type="button">↓ Backup data</button>
+        <button id="btnRestore" type="button">↑ Restore backup</button>
+        <button id="btnReset" type="button" class="danger">↺ Reset register</button>
+        <input id="uploadJSON" type="file" accept="application/json,.json" hidden>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="taskModal" class="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="editModal">
+    <div class="progressTop"><h2 id="modalTitle" style="margin:0">Add a task</h2><button type="button" id="btnModalClose" aria-label="Close">✕</button></div>
+    <p class="sub">Set a due date, record when you actually did it, and optionally link the task to an earlier one.</p>
+    <form id="taskForm">
+      <div class="modalGrid">
+        <label class="field wide">Task name<input id="fTitle" required maxlength="180" placeholder="e.g. Publish Form G"></label>
+        <label class="field wide">Section / Regulation<input id="fRule" maxlength="180" placeholder="e.g. Regulation 36A"></label>
+        <label class="field">Due date (manual override)<input id="fTarget" type="date"></label>
+        <label class="field">Date performed<input id="fActual" type="date"></label>
+        <label class="field">Status<select id="fStatus"></select></label>
+        <label class="field">Linked to (optional)<select id="fAfter"></select></label>
+        <label class="field">Days after linked task<input id="fDays" type="number" min="0" max="365" step="1" placeholder="e.g. 7"></label>
+        <label class="field wide">Notes<textarea id="fNotes" maxlength="1000" placeholder="Order references, filing numbers, remarks…"></textarea></label>
+      </div>
+      <div class="helpNote">Leave the due date blank to use the calculated date. A manual date overrides the calculation. Statutory deadlines do not legally extend because an earlier step ran late — this is a planning aid only.</div>
+      <div class="actions" style="justify-content:flex-end;margin-top:16px">
+        <button type="button" id="btnModalCancel">Cancel</button>
+        <button class="primary" type="submit">Save task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<footer>CIRP Compliance Command Centre · data saved in this browser · last refreshed <span id="lastRefreshed">—</span></footer>
+
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
