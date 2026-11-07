@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+tracker.db
+*.db
+.env
+.venv/
+node_modules/
+*.blend
+*.blend1
+hero_turntable.png
+.DS_Store

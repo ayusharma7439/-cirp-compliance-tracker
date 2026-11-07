@@ -1,27 +1,53 @@
-# CIRP Compliance Tracker
+# CIRP Compliance Command Centre
 
-A responsive browser dashboard with a FastAPI service. It tracks the model CIRP timeline from a configurable insolvency commencement date, status, local backups, calendar export, browser reminders and optional API sync.
+A personal tracker for Corporate Insolvency Resolution Process (IBC) milestones: model timeline, performed-date
+tracking, linked-step date calculation, calendar export, optional email digest and multi-device sync.
 
-## Deploy
-1. Upload the root files to a GitHub repository.
-2. In Render, create a Web Service from that repository (or use the Blueprint). Review current hosting/storage pricing and limitations before deployment.
-3. The free configuration stores SQLite data under `/tmp`, which can be ephemeral on redeploy/restart. For durable shared data, configure persistent storage or a managed database and update `DATABASE_PATH`.
-4. Set SMTP credentials as Render environment secrets only if email reminders are required. Never commit real credentials.
-5. Open the Render service URL; the dashboard is served at `/`.
+```
+app.py            FastAPI server: serves ./docs and a small state API (GET/PUT /api/state, /health)
+digest.py         reminder logic (unit-tested)
+docs/             the website  (index.html, styles.css, app.js, logic.js, hero3d.js, tasks_seed.json)
+tools/            tests + optional Blender script for an authored 3D hero
+render.yaml       Render Blueprint
+```
 
-## Buttons
-- Enable alerts requests browser notification permission. Browser notifications generally require the page to remain open and may be limited by Android/browser settings.
-- Export calendar downloads an `.ics` file for calendar import.
-- Add milestone, Edit, Delete, status dropdowns, filters, search, backup, restore, reset and Sync online are active.
-- Sync online uses the service base URL, not `/api/updates`; the app appends the endpoint.
+## Deploy: GitHub + Render (one service does everything)
 
-## Dates and legal caution
-The included milestone dates reflect a model timeline, using the current IBBI CIRP Regulations available from IBBI as of 9 June 2026 and the standard 180-day model table where relevant. Asterisked dates are assumptions based on a typical sequence (e.g. an EoI/RFRP issued on the model date), not independent statutory dates. Event-based dates must be confirmed from the actual case. Check the current IBC, applicable regulations, amendments, exclusions, circulars and NCLT orders before use. This tracker is not legal advice and does not automatically interpret law changes.
+1. **GitHub**: create an empty *private* repository, then from this folder:
+   ```
+   git init && git add . && git commit -m "CIRP tracker"
+   git branch -M main
+   git remote add origin https://github.com/<you>/<repo>.git
+   git push -u origin main
+   ```
+2. **Render**: Dashboard → **New → Blueprint** → pick the repo → **Apply**. Leave the SMTP/ALERT_EMAIL prompts blank if you don't want email.
+3. Open the `https://<name>.onrender.com` URL. The site detects the server by itself.
+4. Render generated an **API_KEY** for you: Render → your service → *Environment* → copy it → paste it in the site under
+   *Backup, sync & reminders → Access key*. Without the key nobody (including you) can read or write the server copy.
+5. First sync happens automatically; the status line shows the server revision.
 
+### Things to know about the free Render plan
+* **It sleeps after ~15 minutes idle** and takes up to a minute to wake. The daily email digest only runs while the service is awake.
+  Keep it awake with a free uptime pinger (e.g. UptimeRobot hitting `/health` every 5 minutes) or use a paid plan.
+* **Its disk is wiped on restart/redeploy.** Your data is not lost: it lives in your browser, and the site re-uploads it to the server on the next
+  visit. Still use *Backup data* regularly. For a durable server copy use a paid plan + disk (see comments in `render.yaml`).
 
-## Amendment review (09 June 2026)
-The default milestone register is refreshed to remove stale 2024 completion dates and stale phase labels. It adds conditional compliance checkpoints for Regulations 16E and 31B, the amended Regulation 39(3) evaluation rationale, Form GA under Regulation 39(3C), Form H under Regulation 39(4), and ongoing CIRP reporting. The API refreshes milestone descriptions and inserts newly added milestone IDs on startup while preserving user-entered status and target dates.
+### Optional: host only the website on GitHub Pages
+Settings → Pages → *Deploy from branch* → `main` / `/docs`. Then open the Pages site and type your Render URL in the *Server URL* box.
+Set `CORS_ORIGINS=https://<you>.github.io` on Render so only that origin can call the API.
 
-Official references: https://ibbi.gov.in/search/index/legalframework ; https://ibbi.gov.in/uploads/legalframwork/9ff2e33e257d8f22ab3dc142ccce6e29.pdf ; https://ibbi.gov.in/uploads/legalframwork/88150a99fe117c4b9dc4150cdc08c289.pdf
+## Email digest (optional)
+Set `ALERT_EMAIL`, `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD` (and `SMTP_PORT`, `SMTP_FROM` if needed). One digest per day after `DIGEST_HOUR`
+(default 9, India time) lists overdue steps and steps due within `REMINDER_LEAD_DAYS` (default 3). Gmail needs an *app password*.
 
-Important: The milestone descriptions are an operational review aid, not a legal opinion. Event-driven deadlines must be calculated from the actual event. Verify the consolidated regulations, amendments, circulars, effective/transition provisions and NCLT orders before filing.
+## How the dates work
+* Enter the **commencement date (T)**. Rows with a fixed offset (T+3, T+14, T+75 …) are calculated from it.
+* Rows linked to an earlier step (e.g. *Report certifying CoC = verification + 2 days*) are **projected** from the earlier step's due date,
+  and switch to its **performed date** as soon as you record it.
+* **Outer limits** (e.g. valuers by T+47, IM by T+54, Form G by T+75, plan filing by T+165) never move, even if an earlier step ran late.
+* A **manual due date** (Edit) overrides any calculation. *Done late* flags steps performed after their due date.
+
+## Tests
+`node tools/test_logic.js` and `python tools/test_digest.py` (also run by GitHub Actions on every push).
+
+> This is an operational aid, not legal advice. Check every date against the current regulations, circulars and NCLT orders.

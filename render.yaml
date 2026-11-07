@@ -1,3 +1,4 @@
+# Render Blueprint: one web service serves both the website (./docs) and the API.
 services:
   - type: web
     name: cirp-compliance-tracker
@@ -5,8 +6,30 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
       - key: TZ
         value: Asia/Kolkata
-      - key: DATABASE_PATH
-        value: /tmp/tracker.db
+      # Render generates a random access key. Copy it from the service's Environment tab
+      # and paste it into the "Access key" box on the website (Backup, sync & reminders).
+      - key: API_KEY
+        generateValue: true
+      # Optional daily email digest (Render will prompt for these; leave blank to skip).
+      - key: ALERT_EMAIL
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+    # The free plan has an ephemeral disk: the server copy is wiped on every restart/redeploy,
+    # but the site re-uploads your browser's copy automatically. For a durable server copy,
+    # upgrade to a paid plan and uncomment:
+    # disk:
+    #   name: tracker-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
+    # and add the env var  DATABASE_PATH=/var/data/tracker.db
