@@ -1,0 +1,345 @@
+[
+ {
+  "id": 1,
+  "title": "CIRP commencement / IRP appointment",
+  "rule": "Section 16(1)",
+  "mandate": "Insolvency commencement date recorded in NCLT admission order",
+  "timeline": "T+0",
+  "kind": "Statutory / event date",
+  "offset": 0
+ },
+ {
+  "id": 2,
+  "title": "Issue public announcement (Form A)",
+  "rule": "Regulation 6(1)",
+  "mandate": "Within 3 days of appointment of IRP",
+  "timeline": "T+3",
+  "kind": "Statutory deadline",
+  "offset": 3
+ },
+ {
+  "id": 3,
+  "title": "Last date for initial claims in public announcement",
+  "rule": "Section 15(1)(c); Regulations 6(2)(c), 12(1)",
+  "mandate": "14 days from appointment of IRP as stated in Form A; check current regulation and announcement",
+  "timeline": "T+14",
+  "kind": "Statutory trigger; date calculated from appointment",
+  "offset": 14
+ },
+ {
+  "id": 4,
+  "title": "Verify claims received by the last date for claims",
+  "rule": "Regulation 13(1)",
+  "mandate": "Within 7 days from the last date for receipt of claims (T+21 on the IBBI model timeline). Claims received after that date are verified separately under Regulation 13(1B)-(1C).",
+  "timeline": "Last claims date + 7 days (T+21)",
+  "kind": "Event-dependent",
+  "after": 3,
+  "days": 7
+ },
+ {
+  "id": 5,
+  "title": "Apply for appointment of Authorised Representative, if applicable",
+  "rule": "Section 21(6A)(b); Regulation 16A(2)",
+  "mandate": "Within 2 days of verification of claims received under Regulation 12(1), where an Authorised Representative is required",
+  "timeline": "Verification + 2 days (T+23)",
+  "kind": "Event-dependent",
+  "after": 4,
+  "days": 2
+ },
+ {
+  "id": 6,
+  "title": "File report certifying CoC constitution",
+  "rule": "Regulation 17(1)",
+  "mandate": "Within 2 days of verification of claims received under Regulation 12(1)",
+  "timeline": "Verification + 2 days (T+23)",
+  "kind": "Event-dependent",
+  "after": 4,
+  "days": 2
+ },
+ {
+  "id": 7,
+  "title": "First CoC meeting",
+  "rule": "Section 22(1); Regulation 19(2)",
+  "mandate": "Within 7 days of filing the CoC constitution report; notice requirements also apply",
+  "timeline": "Report date + 7 days",
+  "kind": "Event-dependent",
+  "after": 6,
+  "days": 7
+ },
+ {
+  "id": 8,
+  "title": "CoC decision on appointment / replacement of RP",
+  "rule": "Section 22(2)",
+  "mandate": "At first CoC meeting; appointment process must follow Code and regulations",
+  "timeline": "First CoC meeting",
+  "kind": "Event-dependent",
+  "after": 7,
+  "days": 0
+ },
+ {
+  "id": 9,
+  "title": "AA approval of RP appointment",
+  "rule": "Section 22(4); Section 16(5)",
+  "mandate": "Enter actual AA order date; not a fixed T+ date",
+  "timeline": "Event date",
+  "kind": "Event-dependent"
+ },
+ {
+  "id": 10,
+  "title": "IRP continues to perform RP functions if no RP appointed",
+  "rule": "Regulation 17(3)",
+  "mandate": "Track continuation until RP is appointed; T+40 is an alert benchmark, not a substitute for the regulation",
+  "timeline": "T+40 (monitoring benchmark)",
+  "kind": "Model / monitoring benchmark",
+  "offset": 40
+ },
+ {
+  "id": 11,
+  "title": "Appoint two registered valuers",
+  "rule": "Regulation 27",
+  "mandate": "Within 7 days of appointment of RP, but not later than the 47th day from commencement (model timeline); calculate from the actual AA order approving the RP",
+  "timeline": "RP appointment + 7 days (outer T+47)",
+  "kind": "Event-dependent",
+  "after": 9,
+  "days": 7,
+  "outer": 47
+ },
+ {
+  "id": 12,
+  "title": "Prepare and share Information Memorandum with CoC",
+  "rule": "Regulation 36(1)",
+  "mandate": "Within 2 weeks of RP appointment and not later than the 54th day from commencement",
+  "timeline": "RP appointment + 14 days (outer T+54)",
+  "kind": "Statutory outer limit; verify applicability",
+  "after": 9,
+  "days": 14,
+  "outer": 54
+ },
+ {
+  "id": 13,
+  "title": "Publish invitation for Expression of Interest (Form G)",
+  "rule": "Regulation 36A(1); Form G",
+  "mandate": "Publish at the earliest and not later than the 75th day from commencement (Regulation 36A(1)). Use the current Form G format.",
+  "timeline": "Outer limit T+75",
+  "kind": "Verify current law / model benchmark",
+  "outer": 75
+ },
+ {
+  "id": 14,
+  "title": "Last date for EoI submission",
+  "rule": "Regulation 36A(3)(b)",
+  "mandate": "Last date for EoI must be not less than 15 days from the date of issue of the detailed invitation",
+  "timeline": "Form G + 15 days (minimum)",
+  "kind": "Event-dependent",
+  "after": 13,
+  "days": 15
+ },
+ {
+  "id": 15,
+  "title": "Issue provisional list of prospective resolution applicants",
+  "rule": "Regulation 36A(10)",
+  "mandate": "Within 10 days of the last date for submission of EoI",
+  "timeline": "EoI last date + 10 days",
+  "kind": "Event-dependent",
+  "after": 14,
+  "days": 10
+ },
+ {
+  "id": 16,
+  "title": "Invite objections to provisional list",
+  "rule": "Regulation 36A(11)",
+  "mandate": "Objections may be made within 5 days from issue of the provisional list",
+  "timeline": "Provisional list + 5 days",
+  "kind": "Event-dependent",
+  "after": 15,
+  "days": 5
+ },
+ {
+  "id": 17,
+  "title": "Issue final list of prospective resolution applicants",
+  "rule": "Regulation 36A(12)",
+  "mandate": "Within 10 days of the last date for receipt of objections",
+  "timeline": "Objections last date + 10 days",
+  "kind": "Event-dependent",
+  "after": 16,
+  "days": 10
+ },
+ {
+  "id": 18,
+  "title": "Issue IM, evaluation matrix and RFRP to prospective resolution applicants in the provisional list",
+  "rule": "Regulation 36B(1)",
+  "mandate": "Within 5 days of issue of the provisional list",
+  "timeline": "Provisional list + 5 days",
+  "kind": "Event-dependent",
+  "after": 15,
+  "days": 5
+ },
+ {
+  "id": 19,
+  "title": "Form opinion on avoidance / PUFE transactions",
+  "rule": "Regulation 35A(1)",
+  "mandate": "On or before day 75 of insolvency commencement date, subject to applicable current text",
+  "timeline": "T+75",
+  "kind": "Statutory deadline",
+  "offset": 75
+ },
+ {
+  "id": 20,
+  "title": "Determine whether avoidance / PUFE transactions occurred",
+  "rule": "Regulation 35A(2)",
+  "mandate": "On or before day 115 of insolvency commencement date, subject to applicable current text",
+  "timeline": "T+115",
+  "kind": "Statutory deadline",
+  "offset": 115
+ },
+ {
+  "id": 21,
+  "title": "File applications for appropriate relief on avoidance / PUFE transactions",
+  "rule": "Regulation 35A(3)",
+  "mandate": "On or before day 135 of insolvency commencement date, subject to applicable current text",
+  "timeline": "T+135",
+  "kind": "Statutory deadline",
+  "offset": 135
+ },
+ {
+  "id": 22,
+  "title": "Last date for receipt of resolution plans",
+  "rule": "Regulation 36B",
+  "mandate": "Not less than the minimum period under Regulation 36B from RFRP issue (model assumption: 30 days). The period stated in the RFRP / Form G governs.",
+  "timeline": "RFRP issue + 30 days (assumed minimum)",
+  "kind": "Event-dependent",
+  "after": 18,
+  "days": 30
+ },
+ {
+  "id": 23,
+  "title": "Submit CoC-approved plan and compliance certificate (Form H) to AA",
+  "rule": "Section 30(6); Regulation 39(4)",
+  "mandate": "Submit as soon as the CoC approves the plan and at least 15 days before the maximum CIRP period (model outer limit T+165). Use Form H as notified by IBBI circular dated 2 June 2026.",
+  "timeline": "CoC approval; outer T+165",
+  "kind": "Event-dependent",
+  "outer": 165
+ },
+ {
+  "id": 24,
+  "title": "CIRP completion / AA decision on resolution plan",
+  "rule": "Section 12; Section 31(1)",
+  "mandate": "180 days is a base statutory period; extensions, exclusions, amendment transition and court orders must be checked",
+  "timeline": "T+180 (base benchmark)",
+  "kind": "Statutory framework; case-specific",
+  "offset": 180
+ },
+ {
+  "id": 25,
+  "title": "Late claims / claims not included in initial announcement",
+  "rule": "Regulation 12(2)",
+  "mandate": "Late claims may be submitted up to the period in Regulation 12(2) as currently amended (model: 90th day; verify the current text and RFRP-linked limit). Verify late claims under Regulation 13(1B)-(1C).",
+  "timeline": "T+90 (monitoring prompt only)",
+  "kind": "Verify current law / case-specific",
+  "offset": 90
+ },
+ {
+  "id": 26,
+  "title": "Check operational creditor representation in CoC",
+  "rule": "Regulation 16(2)(a), as amended 9 June 2026",
+  "mandate": "Amended rule refers to largest unrelated operational creditors; if fewer than 18 such unrelated operational creditors, include all such unrelated operational creditors",
+  "timeline": "At CoC constitution",
+  "kind": "Amendment compliance checkpoint"
+ },
+ {
+  "id": 27,
+  "title": "Invite operational creditor observers where non-bank/PFI creditors hold >66% voting share",
+  "rule": "Regulation 16E, inserted 9 June 2026",
+  "mandate": "RP to invite five largest unrelated operational creditors, including three largest statutory-dues authorities by admitted claim value, as observers without voting rights; record observations in minutes",
+  "timeline": "Each applicable CoC meeting",
+  "kind": "Conditional amendment checkpoint"
+ },
+ {
+  "id": 28,
+  "title": "Place pre-first-meeting CIRP costs with justification before CoC",
+  "rule": "Regulation 31B(1), amended 9 June 2026",
+  "mandate": "All CIRP costs incurred up to first CoC meeting and justification must be placed for approval at first meeting",
+  "timeline": "First CoC meeting",
+  "kind": "Amendment compliance checkpoint"
+ },
+ {
+  "id": 29,
+  "title": "Prepare and present Going Concern Assessment Report",
+  "rule": "Regulation 31B(2)-(3), amended 9 June 2026",
+  "mandate": "Include estimated income, expenditure and cash flows; working capital needs; material value-erosion risks; CoC decides continuation, scope and duration of operations",
+  "timeline": "First CoC meeting",
+  "kind": "Amendment compliance checkpoint"
+ },
+ {
+  "id": 30,
+  "title": "Obtain prior CoC approval for post-first-meeting CIRP costs",
+  "rule": "Regulation 31B(4)-(5), amended 9 June 2026",
+  "mandate": "At each CoC meeting present next-period estimates, seek approval for proposed costs, and compare actual costs with previously approved estimates",
+  "timeline": "Every CoC meeting",
+  "kind": "Recurring amendment checkpoint"
+ },
+ {
+  "id": 31,
+  "title": "Document CoC evaluation of resolution plans",
+  "rule": "Regulation 39(3), amended 9 June 2026",
+  "mandate": "Record reasoning on feasibility/viability, expected creditor recoveries versus fair/liquidation value, and adequacy of market discovery including challenge / re-invitation where applicable",
+  "timeline": "At plan evaluation / approval",
+  "kind": "Amendment compliance checkpoint"
+ },
+ {
+  "id": 32,
+  "title": "Consider two-stage approval route where applicable",
+  "rule": "Regulation 39(3C); Form GA",
+  "mandate": "Form GA for application for two-stage approval of resolution plan is notified in IBBI Circular IBBI/CIRP/94/2026 dated 2 June 2026; use only where route applies",
+  "timeline": "If two-stage approval is used",
+  "kind": "Conditional form / process checkpoint"
+ },
+ {
+  "id": 33,
+  "title": "Use current notified Form H for compliance certificate",
+  "rule": "Regulation 39(4); Form H",
+  "mandate": "IBBI Circular IBBI/CIRP/94/2026 dated 2 June 2026 specifies Form H under Regulation 39(4); check current instructions and annexures before filing",
+  "timeline": "With plan submission to AA",
+  "kind": "Form / filing checkpoint"
+ },
+ {
+  "id": 34,
+  "title": "Maintain filing and reporting calendar for CIRP forms",
+  "rule": "Regulation 40B and applicable IBBI circulars",
+  "mandate": "Check current reporting forms, modification utility, due dates and applicable fee / late-filing consequences on official IBBI portal",
+  "timeline": "As each reporting form falls due",
+  "kind": "Recurring compliance checkpoint"
+ },
+ {
+  "id": 35,
+  "title": "Reconcile IM, Form G, provisional/final lists and RFRP against actual case events",
+  "rule": "Regulations 36 and 36A-36B",
+  "mandate": "This row is a control check to prevent legacy hard-coded T+ assumptions from overriding current regulation and event dates",
+  "timeline": "Before each process step",
+  "kind": "Control checkpoint"
+ },
+ {
+  "id": 101,
+  "title": "Communicate admission / rejection of each claim, with reasons",
+  "rule": "Regulation 13(1A), as substituted by the Third Amendment Regulations, 2026",
+  "mandate": "Communicate the decision to admit or reject a claim, in whole or in part, with reasons to the creditor within 7 days of the decision (in force from 3 June 2026)",
+  "timeline": "Decision + 7 days",
+  "kind": "Amendment compliance checkpoint"
+ },
+ {
+  "id": 102,
+  "title": "Withdrawal under Section 12A: application timing (if applicable)",
+  "rule": "Regulation 30A, as substituted 2026",
+  "mandate": "Application to AA within 3 days of CoC approval, backed by bank guarantee / demand draft towards process costs; not permitted before CoC constitution or after invitation for EoI",
+  "timeline": "CoC approval + 3 days",
+  "kind": "Conditional process checkpoint"
+ },
+ {
+  "id": 103,
+  "title": "Guarantor assets taken into possession by a creditor (if applicable)",
+  "rule": "Regulations 28A-28B, inserted 2026",
+  "mandate": "Place proposal for transfer of the guarantor's assets before the CoC; CoC to factor the value of such assets into plan evaluation",
+  "timeline": "When a creditor holds a guarantor's assets",
+  "kind": "Conditional process checkpoint"
+ }
+]
